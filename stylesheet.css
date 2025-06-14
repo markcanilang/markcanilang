@@ -359,17 +359,24 @@ header {
 }
 
 .video-overlay {
+    /* ... existing styles for video-overlay ... */
+    display: flex; /* Make it a flex container */
+    flex-direction: column; /* Stack content vertically */
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
+    text-align: center; /* Ensure text is centered if needed */
+    /* Ensure overlay covers the video and is semi-transparent */
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    background: rgba(0, 0, 0, 0.6);
+    height: 100%; /* Make overlay cover the entire video item */
+    background: rgba(0, 0, 0, 0.7); /* Dark semi-transparent overlay */
     color: #fff;
-    padding: 10px;
-    box-sizing: border-box;
-    opacity: 1;
-    transition: opacity 0.3s ease-in-out;
-    pointer-events: none; /* Allows clicks to pass through to the video */
+    padding: 10px 15px;
+    transform: translateY(0); /* Make sure it's always visible for play button logic */
+    transition: none; /* Remove previous transition if it slides */
+    pointer-events: none; /* Crucial: allows clicks to pass through to the parent .video-item */
 }
 
 .video-item:hover .video-overlay {
@@ -377,9 +384,25 @@ header {
 }
 
 .video-overlay p {
-    margin: 0;
-    font-size: 1.1em;
-    text-align: center;
+    margin-bottom: 5px; /* Add some space between title and icon */
+    pointer-events: auto; /* Allow text to be selectable if needed, though click is on parent */
+}
+.video-overlay .play-icon {
+    font-size: 3.5em; /* Large play icon */
+    color: #fff; /* White icon */
+    cursor: pointer;
+    transition: opacity 0.3s ease, color 0.3s ease;
+    opacity: 0; /* Starts hidden */
+    pointer-events: auto; /* Allow interaction with the icon if it becomes visible (though parent click dominates) */
+    z-index: 1; /* Ensure it's above other elements if needed */
+}
+/* This class will be added by JS when autoplay fails to make the icon visible */
+.video-overlay .play-icon.visible {
+    opacity: 1; /* Make the icon visible */
+}
+
+.video-overlay .play-icon:hover {
+    color: var(--main-color); /* Highlight on hover (desktop) */
 }
 
 /* Fullscreen Video Overlay */
